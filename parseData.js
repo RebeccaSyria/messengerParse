@@ -1,3 +1,5 @@
+const charts = {};
+
 function readFile(e) {
 	var file = e.target.files[0];
 	console.log(file)
@@ -69,8 +71,13 @@ function parseData(data){
 
 function makeBarGraph(canvasId, labels, data, dataLabel){
     console.log(canvasId);
-	var ctx = document.getElementById(canvasId).getContext('2d');
-    var barChart = new Chart(ctx, {
+    var canvas = document.getElementById(canvasId);
+	var ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+    if( charts[canvasId] ) {
+        charts[canvasId].destroy();
+    }
+    charts[canvasId] = new Chart(ctx, {
 		type: 'bar',
 		data: {
 			labels: labels,
