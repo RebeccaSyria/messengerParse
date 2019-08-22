@@ -24,28 +24,59 @@ function parseJson(contents){
 }
 
 function parseData(data){
-	var participants = [];	
-	var count = [];
+	var participants = [];
+	var count = {};
+    //for particpant in participants
 	for (var i = 0; i < data.participants.length; i++){
-		participants.push(data.participants[i].name);
-		count.push(0);
+        console.log(data.participants);
+        var p = data.participants[i].name;
+		participants.push(p);
+		count[p] = {};
+        count[p]["total"] = 0;
+        count[p]["totalWords"] = 0;
 	}
+    //for message in messages
 	for (var i = 0; i < data.messages.length;  i++){
 		var message = data.messages[i];
 		var content = message.content;
 		if( !content.includes("Say hi to your new Facebook friend, ")){
-			idx = participants.indexOf(message.sender_name);
-			count[idx] += content.split(" ").length;
+            var time = new Date(message["timestamp_ms"])
+            time.setHours(0);
+            time.setMinutes(0);
+            time.setSeconds(0);
+            time.setMilliseconds(0);
+
+            if( !count[message["sender_name"]][time]) {
+                count[message["sender_name"]][time] = 1
+            } else {
+                count[message["sender_name"]][time] += 1
+            }
+            count[message["sender_name"]]["total"] += 1;
+			count[message["sender_name"]]["totalWords"] += content.split(" ").length;
 		}
 	}
 	console.log(count)
-	var ctx = document.getElementById('myChart').getContext('2d');
-	var barChart = new Chart(ctx, {
+
+    totalMessagesByParticipant = [];
+    totalWordsByParticipant = [];
+    for (var p in participants) {
+        totalMessagesByParticipant.push(count[participants[p]]["total"]);
+        totalWordsByParticipant.push(count[participants[p]]["totalWords"]);
+    }
+    makeBarGraph("totalMessages", participants, totalMessagesByParticipant, "Total Messages");
+    makeBarGraph("totalWords", participants, totalWordsByParticipant, "Total Words");
+}
+
+function makeBarGraph(canvasId, labels, data, dataLabel){
+    console.log(canvasId);
+	var ctx = document.getElementById(canvasId).getContext('2d');
+    var barChart = new Chart(ctx, {
 		type: 'bar',
 		data: {
-			labels: participants,
+			labels: labels,
 			datasets: [{
-				data: count,
+                label: dataLabel,
+				data: data,
 			}]
 		},
 		options: {
@@ -66,10 +97,6 @@ function parseData(data){
 
 }
 
-function displayContents(contents){
-	var element = document.getElementById('file-contents');
-	element.textContent = contents;
-}
 
 window.onload = function(){
 	document.getElementById('file-input').addEventListener('change',readFile,false);
