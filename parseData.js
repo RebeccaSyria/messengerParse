@@ -37,7 +37,6 @@ function parseData(data){
 	}
     var months = [];
     var totalMessagesByMonth = [];
-
     var messagesByHour = new Array(24).fill(0);
     //for message in messages
 	for (var i = 0; i < data.messages.length;  i++){
@@ -45,7 +44,7 @@ function parseData(data){
 		var content = message.content;
 
 
-		if( !content.includes("Say hi to your new Facebook friend, ")){
+		if( content && !content.includes("Say hi to your new Facebook friend, ")){
             var time = new Date(message["timestamp_ms"])
             time.setDate(0);
             messagesByHour[time.getHours()] += 1;
