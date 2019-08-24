@@ -28,7 +28,7 @@ function parseData(data){
 	var count = {};
     //for particpant in participants
 	for (var i = 0; i < data.participants.length; i++){
-        console.log(data.participants);
+
         var p = data.participants[i].name;
 		participants.push(p);
 		count[p] = {};
@@ -37,6 +37,8 @@ function parseData(data){
 	}
     var months = [];
     var totalMessagesByMonth = [];
+
+    var messagesByHour = new Array(24).fill(0);
     //for message in messages
 	for (var i = 0; i < data.messages.length;  i++){
 		var message = data.messages[i];
@@ -46,6 +48,7 @@ function parseData(data){
 		if( !content.includes("Say hi to your new Facebook friend, ")){
             var time = new Date(message["timestamp_ms"])
             time.setDate(0);
+            messagesByHour[time.getHours()] += 1;
             time.setHours(0);
             time.setMinutes(0);
             time.setSeconds(0);
@@ -76,9 +79,9 @@ function parseData(data){
 
     makeBarGraph("totalMessages", participants, totalMessagesByParticipant, "Total Messages");
     makeBarGraph("totalWords", participants, totalWordsByParticipant, "Total Words");
-    console.log(months);
-    console.log(totalMessagesByMonth);
+
     makeLineChart("byMonth", months, totalMessagesByMonth, "Messages")
+    makeLineChart("byHour", [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], messagesByHour, " Total Messages sent during the hour");
 }
 
 function destroyChart(canvasId) {
