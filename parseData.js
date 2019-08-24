@@ -59,6 +59,12 @@ function parseData(data){
                 totalMessagesByMonth.unshift(0);
             }
             totalMessagesByMonth[months.indexOf(monthString)] += 1;
+            if(!participants.includes(message["sender_name"])) {
+                participants.push(message["sender_name"]);
+        		count[message["sender_name"]] = {};
+                count[message["sender_name"]]["total"] = 0;
+                count[message["sender_name"]]["totalWords"] = 0;
+            }
             if( !count[message["sender_name"]][time]) {
                 count[message["sender_name"]][time] = 1
             } else {
