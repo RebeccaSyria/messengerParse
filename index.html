@@ -4,22 +4,29 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
 	<script src="parseData.js"></script>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 	<input type="file" id="file-input"/>
 	<h3>Statistics:</h3>
-
-    <div style="width: 400px; height:400px;">
-	    <canvas id="totalMessages" width="200" height="200"></canvas>
-    </div>
-    <div style="width: 400px; height:400px;">
-        <canvas id="totalWords" width="200" height="200"></canvas>
-    </div>
-    <div style="width: 400px; height:400px;">
-        <canvas id="byMonth" width="200" height="200"></canvas>
-    </div>
-    <div style="width: 400px; height:400px;">
-        <canvas id="byHour" width="200" height="200"></canvas>
+    <div id="container">
+        <div style="width: 400px; height:400px;">
+    	    <canvas id="totalMessages" width="200" height="200"></canvas>
+        </div>
+        <div style="width: 400px; height:400px;">
+            <canvas id="totalWords" width="200" height="200"></canvas>
+        </div>
+        <div style='clear:both'></div>
+        <div style="width: 400px; height:400px;">
+            <canvas id="byMonth" width="200" height="200"></canvas>
+        </div>
+        <div style="width: 400px; height:400px;">
+            <canvas id="byHour" width="200" height="200"></canvas>
+        </div>
     </div>
 </body>
 </html>

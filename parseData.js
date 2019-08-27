@@ -22,6 +22,14 @@ function parseJson(contents){
 	}
 	parseData(data);
 }
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 function parseData(data){
 	var participants = [];
@@ -99,13 +107,15 @@ function makeLineChart(canvasId, labels, data, dataLabel){
     var canvas = document.getElementById(canvasId);
     var ctx = canvas.getContext('2d');
     destroyChart(canvasId);
+
     charts[canvasId] = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
                 label: dataLabel,
-                data: data
+                data: data,
+                backgroundColor: getRandomColor()
             }]
         }
     })
@@ -115,16 +125,27 @@ function makeBarGraph(canvasId, labels, data, dataLabel){
     var canvas = document.getElementById(canvasId);
 	var ctx = canvas.getContext('2d');
     destroyChart(canvasId);
+    var colorArray = [];
+    data.forEach(() => {
+        colorArray.push(getRandomColor());
+    })
     charts[canvasId] = new Chart(ctx, {
 		type: 'bar',
 		data: {
 			labels: labels,
 			datasets: [{
-                label: dataLabel,
-				data: data
+				data: data,
+                backgroundColor: colorArray
 			}]
 		},
 		options: {
+            legend: {
+                display: false
+            },
+            title: {
+                display: true,
+                text: dataLabel
+            },
 			scales: {
 				yAxes: [{
 					ticks: {
